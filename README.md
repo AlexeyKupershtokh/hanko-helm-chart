@@ -1,7 +1,6 @@
 # Hanko Helm Chart
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Hanko](https://img.shields.io/badge/Hanko-v1.0.0-blue)](https://www.hanko.io)
 
 A Helm chart for deploying [Hanko](https://www.hanko.io) - an open-source authentication and user management service - on Kubernetes.
 
