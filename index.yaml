@@ -3,6 +3,32 @@ entries:
   hanko:
   - apiVersion: v2
     appVersion: v1.0.0
+    created: "2026-03-20T06:47:14.800114893Z"
+    description: A Helm chart for Hanko Authentication Service
+    digest: 7c5559b2c5d4ddf29bd4d10bb0655e299b603b2314a0e01cc6032d705637b57f
+    home: https://github.com/AlexeyKupershtokh/hanko-helm-chart
+    keywords:
+    - authentication
+    - identity
+    - oidc
+    - oauth
+    - passkey
+    - webauthn
+    - iam
+    maintainers:
+    - email: alexey.kupershtokh@gmail.com
+      name: Alexey Kupershtokh
+      url: https://github.com/AlexeyKupershtokh/
+    name: hanko
+    sources:
+    - https://github.com/AlexeyKupershtokh/hanko-helm-chart
+    - https://github.com/teamhanko/hanko
+    type: application
+    urls:
+    - https://github.com/AlexeyKupershtokh/hanko-helm-chart/releases/download/hanko-0.1.3/hanko-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: v1.0.0
     created: "2026-03-20T06:42:57.298310173Z"
     description: A Helm chart for Hanko Authentication Service
     digest: 7f3ac28370ff33bce579620bec308c23eb826eab89c01f531613a1d55261a7ae
@@ -26,4 +52,4 @@ entries:
     urls:
     - https://github.com/AlexeyKupershtokh/hanko-helm-chart/releases/download/hanko-0.1.2/hanko-0.1.2.tgz
     version: 0.1.2
-generated: "2026-03-20T06:42:57.298320112Z"
+generated: "2026-03-20T06:47:14.800127637Z"
