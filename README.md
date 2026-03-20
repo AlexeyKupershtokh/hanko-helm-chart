@@ -28,7 +28,7 @@ Learn more at [hanko.io](https://www.hanko.io) or on [GitHub](https://github.com
 ### Add the Helm Repository
 
 ```bash
-helm repo add hanko https://github.com/AlexeyKupershtokh/hanko-helm-chart.git
+helm repo add hanko https://alexeykupershtokh.github.io/hanko-helm-chart
 helm repo update
 ```
 

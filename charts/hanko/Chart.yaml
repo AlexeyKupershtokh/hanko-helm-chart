@@ -3,9 +3,10 @@ name: hanko
 description: A Helm chart for Hanko Authentication Service
 type: application
 appVersion: "v1.0.0"
-version: 0.1.2
-home: https://www.hanko.io
+version: 0.1.3
+home: https://github.com/AlexeyKupershtokh/hanko-helm-chart
 sources:
+  - https://github.com/AlexeyKupershtokh/hanko-helm-chart
   - https://github.com/teamhanko/hanko
 keywords:
   - authentication
@@ -16,6 +17,6 @@ keywords:
   - webauthn
   - iam
 maintainers:
-  - name: hanko
-    email: support@hanko.io
-    url: https://www.hanko.io
+  - name: Alexey Kupershtokh
+    email: alexey.kupershtokh@gmail.com
+    url: https://github.com/AlexeyKupershtokh/
