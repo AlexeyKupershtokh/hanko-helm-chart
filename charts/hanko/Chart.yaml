@@ -3,7 +3,7 @@ name: hanko
 description: A Helm chart for Hanko Authentication Service
 type: application
 appVersion: "v2.5.0"
-version: 0.1.4
+version: 0.1.5
 home: https://github.com/AlexeyKupershtokh/hanko-helm-chart
 sources:
   - https://github.com/AlexeyKupershtokh/hanko-helm-chart
