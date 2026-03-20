@@ -1,0 +1,396 @@
+# Default values for the Hanko Helm chart.
+# This file contains all configurable parameters for deploying Hanko on Kubernetes.
+
+# -- Number of replicas for the Hanko deployment
+replicaCount: 1
+
+# -- Image configuration for Hanko
+image:
+  # -- Docker image repository
+  repository: ghcr.io/teamhanko/hanko
+  # -- Image pull policy
+  pullPolicy: IfNotPresent
+  # -- Image tag (defaults to appVersion if not set)
+  tag: ""
+
+# -- References to secrets containing Docker registry credentials
+imagePullSecrets: []
+
+# -- Override the chart name in resource names
+nameOverride: ""
+
+# -- Override the full name in resource names
+fullnameOverride: ""
+
+# -- Service account configuration
+serviceAccount:
+  # -- Create a service account
+  create: true
+  # -- Annotations for the service account
+  annotations: {}
+  # -- Service account name (auto-generated if not set)
+  name: ""
+
+# -- Pod annotations
+podAnnotations: {}
+
+# -- Pod labels
+podLabels: {}
+
+# -- Pod security context
+podSecurityContext: {}
+  # fsGroup: 2000
+
+# -- Container security context
+securityContext: {}
+  # runAsNonRoot: true
+  # runAsUser: 65532
+  # allowPrivilegeEscalation: false
+  # readOnlyRootFilesystem: true
+
+# -- Additional volumes for Hanko pods
+extraVolumes: []
+
+# -- Additional volume mounts for Hanko container
+extraVolumeMounts: []
+
+# -- Additional environment variables
+extraEnv: []
+
+# -- Environment variables from secrets or configmaps
+envFrom: []
+
+# -- Hanko configuration
+# See https://github.com/teamhanko/hanko/blob/main/backend/config/config.go for all options
+config:
+  # -- Service configuration
+  service:
+    # -- Service name displayed in UIs
+    name: "Hanko Authentication Service"
+
+  # -- Server configuration
+  server:
+    public:
+      # -- Public API address (leave empty to listen on all interfaces)
+      address: "0.0.0.0"
+      # -- Public API port
+      port: 8000
+      # -- CORS configuration
+      cors:
+        # -- Allowed origins for CORS
+        allowOrigins: []
+        # - "https://your-app.com"
+    admin:
+      # -- Admin API address
+      address: "0.0.0.0"
+      # -- Admin API port
+      port: 8001
+
+  # -- Database configuration
+  database:
+    # -- Database dialect (postgres, mysql, cockroach)
+    dialect: postgres
+    # -- Database host (use existing PostgreSQL or enable postgresql subchart)
+    host: ""
+    # -- Database port
+    port: 5432
+    # -- Database name
+    database: hanko
+    # -- Database user
+    user: hanko
+    # -- Database password (use passwordSecret instead for production)
+    password: ""
+    # -- Name of secret containing database password at key "password"
+    passwordSecret: ""
+    # -- SSL mode for database connection
+    sslMode: disable
+    # -- Maximum number of database connections
+    maxOpenConns: 25
+    # -- Maximum idle database connections
+    maxIdleConns: 5
+
+  # -- Session configuration
+  session:
+    # -- JWT secret key (generate a random 32+ character string)
+    secret: ""
+    # -- Name of secret containing JWT secret at key "secret"
+    secretSecretName: ""
+    # -- Session cookie configuration
+    cookie:
+      # -- Cookie name
+      name: hanko
+      # -- Cookie domain
+      domain: ""
+      # -- Cookie path
+      path: /
+      # -- Secure flag (set to true for HTTPS)
+      secure: false
+      # -- HttpOnly flag
+      httpOnly: true
+      # -- SameSite policy
+      sameSite: lax
+    # -- Session lifetime
+    lifespan: 1h
+
+  # -- Secrets for cryptographic operations
+  secrets:
+    # -- Secret keys for signing tokens (use secretsSecretName for production)
+    keys: []
+    # - "your-secret-key-at-least-32-chars"
+    # -- Name of secret containing keys at key "keys" (comma-separated)
+    secretsSecretName: ""
+
+  # -- WebAuthn/Passkey configuration
+  webauthn:
+    # -- Relying party configuration
+    relyingParty:
+      # -- Relying party ID (usually your domain)
+      id: ""
+      # -- Relying party name
+      name: Hanko
+      # -- Allowed origins for WebAuthn
+      origins: []
+      # - "https://your-app.com"
+    # -- User verification requirement
+    userVerification: preferred
+
+  # -- Email delivery configuration
+  emailDelivery:
+    # -- Enable email delivery
+    enabled: false
+    # -- SMTP configuration
+    smtp:
+      # -- SMTP host
+      host: ""
+      # -- SMTP port
+      port: 587
+      # -- SMTP user
+      user: ""
+      # -- SMTP password (use smtpPasswordSecret instead for production)
+      password: ""
+      # -- Name of secret containing SMTP password at key "password"
+      passwordSecret: ""
+      # -- TLS enabled
+      tls: true
+    # -- From address for emails
+    fromAddress: ""
+
+  # -- Password authentication configuration
+  password:
+    # -- Enable password authentication
+    enabled: true
+    # -- Minimum password length
+    minLength: 8
+    # -- Require uppercase letters
+    requireUppercase: false
+    # -- Require lowercase letters
+    requireLowercase: false
+    # -- Require numbers
+    requireNumber: false
+    # -- Require special characters
+    requireSpecial: false
+
+  # -- MFA (Multi-Factor Authentication) configuration
+  mfa:
+    # -- Enable MFA
+    enabled: true
+    # -- Make MFA optional (vs required)
+    optional: true
+    # -- Acquire MFA on login
+    acquireOnLogin: false
+    # -- Acquire MFA on registration
+    acquireOnRegistration: true
+    # -- TOTP configuration
+    totp:
+      enabled: true
+    # -- Security keys configuration
+    securityKeys:
+      enabled: false
+
+  # -- Rate limiter configuration
+  rateLimiter:
+    # -- Enable rate limiting
+    enabled: true
+    # -- Storage type (memory, redis)
+    storage: memory
+    # -- Redis configuration (if storage is redis)
+    redis:
+      host: ""
+      port: 6379
+      password: ""
+      database: 0
+
+  # -- Logging configuration
+  log:
+    # -- Log level (debug, info, warn, error)
+    level: info
+    # -- Log format (json, text)
+    format: json
+
+  # -- Audit log configuration
+  auditLog:
+    # -- Enable audit logging
+    enabled: false
+    # -- Output type (database, stdout)
+    output: database
+
+  # -- Privacy configuration
+  privacy:
+    # -- Use analytics
+    useAnalytics: true
+
+# -- PostgreSQL subchart configuration
+postgresql:
+  # -- Enable PostgreSQL subchart
+  enabled: false
+  # -- PostgreSQL authentication
+  auth:
+    # -- Database name
+    database: hanko
+    # -- Database user
+    username: hanko
+    # -- Database password (auto-generated if not set)
+    password: ""
+    # -- Secret containing password
+    existingSecret: ""
+    # -- Secret password key
+    secretKeys:
+      userPasswordKey: password
+
+# -- Service configuration for Hanko
+service:
+  # -- Service type
+  type: ClusterIP
+  # -- Service ports
+  ports:
+    public:
+      port: 8000
+      targetPort: 8000
+      name: http-public
+    admin:
+      port: 8001
+      targetPort: 8001
+      name: http-admin
+  # -- Service annotations
+  annotations: {}
+
+# -- Ingress configuration
+ingress:
+  # -- Enable ingress
+  enabled: false
+  # -- Ingress class name
+  className: ""
+  # -- Ingress annotations
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  # -- Hosts configuration
+  hosts:
+    public:
+      - host: hanko.local
+        paths:
+          - path: /
+            pathType: Prefix
+    admin:
+      - host: hanko-admin.local
+        paths:
+          - path: /
+            pathType: Prefix
+  # -- TLS configuration
+  tls: []
+  #  - secretName: hanko-tls
+  #    hosts:
+  #      - hanko.local
+
+# -- Resource limits and requests
+resources: {}
+  # limits:
+  #   cpu: 500m
+  #   memory: 512Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# -- Autoscaling configuration
+autoscaling:
+  # -- Enable autoscaling
+  enabled: false
+  # -- Minimum replicas
+  minReplicas: 1
+  # -- Maximum replicas
+  maxReplicas: 10
+  # -- Target CPU utilization
+  targetCPUUtilizationPercentage: 80
+  # -- Target memory utilization
+  targetMemoryUtilizationPercentage: 80
+
+# -- Node selector
+nodeSelector: {}
+
+# -- Tolerations
+tolerations: []
+
+# -- Affinity rules
+affinity: {}
+
+# -- Pod disruption budget
+podDisruptionBudget:
+  # -- Enable PDB
+  enabled: false
+  # -- Minimum available pods
+  minAvailable: 1
+  # -- Maximum unavailable pods
+  maxUnavailable: null
+
+# -- Init containers
+initContainers: []
+
+# -- Sidecar containers
+extraContainers: []
+
+# -- Liveness probe configuration
+livenessProbe:
+  # -- Enable liveness probe
+  enabled: true
+  # -- Initial delay seconds
+  initialDelaySeconds: 30
+  # -- Period seconds
+  periodSeconds: 10
+  # -- Timeout seconds
+  timeoutSeconds: 5
+  # -- Failure threshold
+  failureThreshold: 3
+
+# -- Readiness probe configuration
+readinessProbe:
+  # -- Enable readiness probe
+  enabled: true
+  # -- Initial delay seconds
+  initialDelaySeconds: 5
+  # -- Period seconds
+  periodSeconds: 10
+  # -- Timeout seconds
+  timeoutSeconds: 5
+  # -- Success threshold
+  successThreshold: 1
+  # -- Failure threshold
+  failureThreshold: 3
+
+# -- Migration job configuration
+migration:
+  # -- Enable migration job
+  enabled: true
+  # -- Job annotations
+  annotations: {}
+  # -- Job TTL seconds after finished
+  ttlSecondsAfterFinished: 600
+  # -- Backoff limit
+  backoffLimit: 5
+  # -- Resource limits
+  resources: {}
+  # -- Node selector
+  nodeSelector: {}
+  # -- Tolerations
+  tolerations: []
+  # -- Affinity
+  affinity: {}
